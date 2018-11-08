@@ -10,9 +10,9 @@
 <!-- 제이쿼리 -->
 </head>
 <body>
-	<h1>리스트</h1>
+	<h1 class="text-danger text-center">리스트</h1>
 	<table class="table">
-		<thead>
+		<thead class="table-primary">
 			<tr>
 				<td>Sample NO</td>
 				<td>Sample ID</td>
@@ -21,25 +21,25 @@
 				<td>UPDATE</td>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody  class="table-success">
 			<c:forEach var="sample" items="${sampleList}">
 				<tr>
 					<td>${sample.sampleNo}</td>
 					<td>${sample.sampleId}</td>
 					<td>${sample.samplePw}</td>
-					<td><a href="/sample/removeSample?sampleNo=${sample.sampleNo}">DELETE</a></td>
-					<td><a href="/sample/modifySample?sampleNo=${sample.sampleNo}">UPDATE</a></td>
+					<td><button type="button" class="btn btn-info" onclick="location.href='/sample/removeSample?sampleNo=${sample.sampleNo}'">DELETE</button></td>
+					<td><button type="button" class="btn btn-info" onclick="location.href='/sample/modifySample?sampleNo=${sample.sampleNo}'">UPDATE</button></td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
 	<c:if test="${currentPage > 1}">
 		<a href="<%=request.getContextPath()%>/sample/sampleList?currentPage=${currentPage-1}">
-			<button type="button">이전</button></a>
+			<button type="button" class="btn btn-danger">이전</button></a>
 	</c:if>
 	<c:if test="${currentPage < lastPage}">
 		<a href="<%=request.getContextPath()%>/sample/sampleList?currentPage=${currentPage+1}">
-			<button type="button">다음</button></a>
+			<button type="button" class="btn btn-danger">다음</button></a>
 	</c:if>
 </body>
 </html>

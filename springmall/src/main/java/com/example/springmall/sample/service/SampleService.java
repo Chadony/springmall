@@ -35,7 +35,24 @@ public class SampleService {
 	
 	// 2. 삭제
 	public int removeSample(int sampleNo) {
-		System.out.println(sampleNo + "<-- Service sampleNo");
+		System.out.println(sampleNo + "<-- Service removeSample");
 		return sampleMapper.deleteSample(sampleNo);
+	}
+	
+	// 3. 추가
+	public int addSample(Sample sample) {
+		System.out.println(sample + "<-- Service addSample");
+		return sampleMapper.insertSample(sample);
+	}
+	
+	// 4-1
+	public Sample getSample(int sampleNo) {
+		System.out.println(sampleNo + "<-- Service getSample");
+		return sampleMapper.selectOne(sampleNo);
+	}
+	// 4-2
+	public int modifySample(Sample sample) {
+		System.out.println(sample + "<-- Service modifySample");
+		return sampleMapper.updateSample(sample);
 	}
 }

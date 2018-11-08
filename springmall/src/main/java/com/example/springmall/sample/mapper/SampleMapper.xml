@@ -11,6 +11,15 @@
     <select id="selectSampleAllPage" parameterType="hashMap" resultType="com.example.springmall.sample.vo.Sample">
 		SELECT sampleNo, sampleId, samplePw FROM sample ORDER BY sampleNo DESC LIMIT #{startRow}, #{pagePerRow}
 	</select>
+	<select id="selectOne" resultType="com.example.springmall.sample.vo.Sample">
+        SELECT * FROM sample WHERE sampleNo = #{sampleNo}
+    </select>
+    <insert id="insertSample" parameterType="com.example.springmall.sample.vo.Sample">
+    	INSERT INTO sample(sampleId,samplePw) VALUES(#{sampleId},#{samplePw});
+    </insert>
+    <update id="updateSample" parameterType="com.example.springmall.sample.vo.Sample">
+    	UPDATE sample SET sampleId = #{sampleId}, samplePw = #{samplePw} WHERE sampleNo = #{sampleNo}
+    </update>
 	<delete id="deleteSample">
 		DELETE FROM sample WHERE sampleNo = #{sampleNo}
 	</delete>

@@ -15,12 +15,17 @@ import com.example.springmall.sample.vo.Sample;
 
 @Controller
 public class SampleController {
+	
+	/*
+	 * DATA(변수) + FUNCTION(함수(제어문,메서드,연산자))
+	 */
+	
 	@Autowired
 	private SampleService sampleService;
 	// 1. 샘플리스트
 	@RequestMapping(value="/sample/sampleList", method=RequestMethod.GET)
 	public String sampleList(Model model, @RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage) { // Model model = new Model();
-		HashMap<String, Object> map=new HashMap<String, Object>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("currentPage", currentPage);
 		List<Sample> sampleList = sampleService.getSampleAll(map);
 		model.addAttribute("sampleList", sampleList);
@@ -40,6 +45,38 @@ public class SampleController {
 	}
 	
 	// 3-1. 입력폼
+	@RequestMapping(value="/sample/addSample", method=RequestMethod.GET)
+	public String addSample(Model model) {
+		System.out.println("입력폼");
+		return "sample/addSample";
+		// jquery, bootstrap, Sample command객체 매칭
+	}
+	// 3-2. 입력액션 
+	@RequestMapping(value="/sample/addSample", method=RequestMethod.POST)
+	public String addSample(Sample sample) { // 커맨드 객체 => Sample 빈 객체에 폼의 input name과 vo의 name이 같으면 Sample객체에 값이 담긴다,,?
+		// command객체의 멤버변수 == input태그 name속성 , 세트를불러오는데 표준 setter가 필요
+		if(sampleService.addSample(sample)==1) {
+			System.out.println(sample + "<-- 데이터 입력 성공");
+		}
+		System.out.println(sample + "<-- 입력액션");
+		return "redirect:/sample/sampleList";
+	}
 	
-	// 3-2. 입력액션
+	// 4-1. 수정폼
+	@RequestMapping(value="/sample/modifySample", method=RequestMethod.GET)
+	public String modifySample(Model model, @RequestParam(value="sampleNo") int sampleNo) {
+		Sample sample = sampleService.getSample(sampleNo);
+		model.addAttribute("sample", sample);
+		System.out.println(model + "<-- 수정폼");
+		return "/sample/modifySample";
+	}
+	// 4-2. 수정액션
+	@RequestMapping(value="/sample/modifySample", method=RequestMethod.POST)
+	public String modifySample(Sample sample) {
+		if(sampleService.modifySample(sample)==1) {
+			System.out.println(sample + "<-- 데이터 수정 성공");
+		}
+		System.out.println(sample + "<-- 수정액션");
+		return "redirect:/sample/sampleList";
+	}
 }

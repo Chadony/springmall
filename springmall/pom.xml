@@ -37,7 +37,12 @@
 		    <version>9.0.12</version>
 		</dependency>
 		<!-- jsp 사용을 위한 jstl 의존성 추가 END -->
-		
+		<!-- 재부팅툴 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
