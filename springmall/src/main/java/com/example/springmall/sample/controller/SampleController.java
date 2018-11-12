@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.springmall.sample.service.SampleService;
 import com.example.springmall.sample.vo.Sample;
+import com.example.springmall.sample.vo.SampleRequest;
 
 @Controller
 public class SampleController {
@@ -53,12 +54,13 @@ public class SampleController {
 	}
 	// 3-2. 입력액션 
 	@RequestMapping(value="/sample/addSample", method=RequestMethod.POST)
-	public String addSample(Sample sample) { // 커맨드 객체 => Sample 빈 객체에 폼의 input name과 vo의 name이 같으면 Sample객체에 값이 담긴다,,?
+	public String addSample(SampleRequest sampleRequest) { // 커맨드 객체 => Sample 빈 객체에 폼의 input name과 vo의 name이 같으면 SampleRequest객체에 값이 담긴다,,?
 		// command객체의 멤버변수 == input태그 name속성 , 세트를불러오는데 표준 setter가 필요
-		if(sampleService.addSample(sample)==1) {
-			System.out.println(sample + "<-- 데이터 입력 성공");
+		System.out.println("sampleRequest"+sampleRequest.getMultipartFile());
+		if(sampleService.addSample(sampleRequest)==1) {
+			System.out.println(sampleRequest + "<-- 데이터 입력 성공");
 		}
-		System.out.println(sample + "<-- 입력액션");
+		System.out.println(sampleRequest + "<-- 입력액션");
 		return "redirect:/sample/sampleList";
 	}
 	

@@ -9,7 +9,7 @@
 </head>
 <body>
 	<h1 class="text-danger text-center">샘플 추가</h1>
-	<form action="<%=request.getContextPath()%>/sample/addSample" method="post">
+	<form action="<%=request.getContextPath()%>/sample/addSample" method="post" enctype="multipart/form-data">
 	<table class="table">
 		<tr class="table-primary">
 			<td>아이디</td>
@@ -18,6 +18,10 @@
 		    <td>비밀번호</td>
 		    <td><input type="text" name="samplePw" size="20"></td>
 		<tr>
+		<tr class="table-primary">
+			<td>파일</td>
+			<td><input type="file" name="multipartFile"></td>
+		</tr>
 		<tr>
 		    <td colspan="2"><input type="submit" class="btn btn-info" value="샘플 추가"></td>
 		</tr>

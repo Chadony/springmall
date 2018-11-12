@@ -15,7 +15,10 @@
         SELECT * FROM sample WHERE sampleNo = #{sampleNo}
     </select>
     <insert id="insertSample" parameterType="com.example.springmall.sample.vo.Sample">
-    	INSERT INTO sample(sampleId,samplePw) VALUES(#{sampleId},#{samplePw});
+    	<selectKey resultType="int" keyProperty="sampleNo" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    	INSERT INTO sample(sampleId,samplePw) VALUES(#{sampleId},#{samplePw})
     </insert>
     <update id="updateSample" parameterType="com.example.springmall.sample.vo.Sample">
     	UPDATE sample SET sampleId = #{sampleId}, samplePw = #{samplePw} WHERE sampleNo = #{sampleNo}

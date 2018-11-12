@@ -4,7 +4,7 @@ public class Sample {
 	private int sampleNo;
 	private String sampleId;
 	private String samplePw;
-	
+	//private SampleFile sampleFIle; // 조인 쿼리용
 	
 	// 생성자 ------
 	public Sample() {
