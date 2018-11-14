@@ -3,6 +3,8 @@ package com.example.springmall.sample.controller;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +38,7 @@ public class SampleController {
 	}
 	// 2. 삭제
 	@RequestMapping(value="/sample/removeSample", method=RequestMethod.GET)
-	public String removeSample(@RequestParam(value="sampleNo") int sampleNo) {
+	public String removeSample(@RequestParam(value="sampleNo") int sampleNo ) {
 		System.out.println("removeSample  controller START ---------");
 		if(sampleService.removeSample(sampleNo)==1) {
 			System.out.println(sampleNo + "<-- 데이터 삭제 성공");
@@ -54,10 +56,12 @@ public class SampleController {
 	}
 	// 3-2. 입력액션 
 	@RequestMapping(value="/sample/addSample", method=RequestMethod.POST)
-	public String addSample(SampleRequest sampleRequest) { // 커맨드 객체 => Sample 빈 객체에 폼의 input name과 vo의 name이 같으면 SampleRequest객체에 값이 담긴다,,?
+	public String addSample(SampleRequest sampleRequest, HttpSession session) { // 커맨드 객체 => Sample 빈 객체에 폼의 input name과 vo의 name이 같으면 SampleRequest객체에 값이 담긴다,,?
 		// command객체의 멤버변수 == input태그 name속성 , 세트를불러오는데 표준 setter가 필요
+		String realPath = session.getServletContext().getRealPath("/WEB-INF/uploads");
 		System.out.println("sampleRequest"+sampleRequest.getMultipartFile());
-		if(sampleService.addSample(sampleRequest)==1) {
+		int row = sampleService.addSample(sampleRequest, realPath);
+		if(row != 0) {
 			System.out.println(sampleRequest + "<-- 데이터 입력 성공");
 		}
 		System.out.println(sampleRequest + "<-- 입력액션");

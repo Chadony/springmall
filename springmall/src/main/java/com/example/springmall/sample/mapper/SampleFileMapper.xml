@@ -7,4 +7,13 @@
     <insert id="insertSampleFile" parameterType="com.example.springmall.sample.vo.SampleFile">
         INSERT INTO samplefile(sampleNo,samplefilePath,samplefileName,samplefileExt,samplefileType,samplefileSize,samplefileDate) VALUES(#{sampleNo},#{sampleFilePath},#{sampleFileName},#{sampleFileExt},#{sampleFileType},#{sampleFileSize},now())
     </insert>
+    
+    <delete id="deleteSampleFile" parameterType="com.example.springmall.sample.vo.SampleFile">
+    	DELETE FROM samplefile WHERE sampleNo = #{sampleNo}
+    </delete>
+    
+    <select id="selectFileOne" resultType="com.example.springmall.sample.vo.SampleFile">
+        SELECT * FROM samplefile WHERE sampleNo = #{sampleNo}
+    </select>
+    
 </mapper>

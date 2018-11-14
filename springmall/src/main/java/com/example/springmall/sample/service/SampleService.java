@@ -45,11 +45,19 @@ public class SampleService {
 	// 2. 삭제
 	public int removeSample(int sampleNo) {
 		System.out.println(sampleNo + "<-- Service removeSample");
+		SampleFile sampleFile = new SampleFile();
+		sampleFile = sampleFileMapper.selectFileOne(sampleNo);
+		String filePath = sampleFile.getSampleFilePath();
+		String fileName = sampleFile.getSampleFileName();
+		String fileExt = sampleFile.getSampleFileExt();
+		File file = new File(filePath+"/"+fileName+"."+fileExt);
+		file.delete();
+		sampleFileMapper.deleteSampleFile(sampleNo);
 		return sampleMapper.deleteSample(sampleNo);
 	}
 	
 	// 3. 추가
-	public int addSample(SampleRequest sampleRequest) {
+	public int addSample(SampleRequest sampleRequest, String realPath) {
 		System.out.println(sampleRequest + "<-- Service addSample");
 		/*
 		 * SampleRequest -> Sample 변환
@@ -67,12 +75,13 @@ public class SampleService {
 		// 1. SampleFileNo : Autoincrement
 		// 2. SampleNo
 		sampleFile.setSampleNo(sample.getSampleNo()); // insertSample(sample)후에 PK값이 sample에 채워진다.
-		// 3. SampleFilePath
-		String path = "c:\\uploads"; // 복잡한 루틴을 통해서 
-		sampleFile.setSampleFilePath(path);
-		// 4. SampleFileExt
-		String originalFileName = multipartFile.getOriginalFilename(); // 이름.확장자
-		String ext = originalFileName.substring(0); // 확장자 짜르기
+		// 3. SampleFilePath  4. SampleFileExt // 이름.확장자
+		sampleFile.setSampleFilePath(realPath);
+		String originalFileName = multipartFile.getOriginalFilename(); 
+		int pos = originalFileName.lastIndexOf(".");
+		System.out.println(pos+"<-------------POS!");
+		String ext = originalFileName.substring(pos+1); // 확장자 짜르기
+		System.out.println(ext+"<-------------EXT!");
 		sampleFile.setSampleFileExt(ext);
 		// 5. SampleFileName
 		String filename = UUID.randomUUID().toString(); // 랜덤 이름 만들기  
@@ -83,17 +92,21 @@ public class SampleService {
 		sampleFile.setSampleFileSize(multipartFile.getSize());
 		//sampleFileMapper.insertSampleFile(sampleFile);
 		// 내가 원하는 이름의 빈 파일을 만들자
-		File file = new File(path+"\\"+filename+"."+ext);
-		// multipartFile 파일을 빈 파일로 복사하자 ((에러가 발생할수도 있으니 try catch절로 묶기..)) ex.. 전송중에러 크기에러
-		
-		int insertSampleFiles = sampleFileMapper.insertSampleFile(sampleFile);
-		if(insertSampleFiles == 1) {
-			System.out.println(originalFileName + "<-- 데이터 입력 성공");
+		File folder = new File(realPath);
+		if (!folder.isDirectory()) { 
+				folder.mkdirs(); 
+				System.out.println(folder+"<-폴더 생성");
 		}
+		// multipartFile 파일을 빈 파일로 복사하자 ((에러가 발생할수도 있으니 try catch절로 묶기..)) ex.. 전송중에러 크기에러
+		int insertSampleFiles = sampleFileMapper.insertSampleFile(sampleFile);
 		try {
-			multipartFile.transferTo(file);
+			multipartFile.transferTo(new File(realPath+"/"+filename+"."+ext));
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
+		}
+		
+		if(insertSampleFiles == 1) {
+			System.out.println(originalFileName + "<-- 데이터 입력 성공");
 		}
 		
 		// @Transactional
